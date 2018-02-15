@@ -169,14 +169,16 @@ Georgia Tech
 
 \section{Common Containers}
 
-\begin{frame}{array}
+\begin{frame}[fragile]{array}
 	\begin{itemize}
 		\item Fixed size container
 		\item Preferred over "c-style" arrays
+		\item Two template arguments: \textit{type} and \textit{size}
 	\end{itemize}
+	\bigskip
 	\begin{exampleblock}{Example}
 	\begin{verbatim}
-		arrray
+		std::array<int,5> my_array = {0,1,2,3,4};
 	\end{verbatim}
 	\end{exampleblock}
 \end{frame}
