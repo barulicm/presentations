@@ -1,9 +1,16 @@
 %%
 % Please see https://bitbucket.org/rivanvx/beamer/wiki/Home for obtaining beamer.
 %%
-\documentclass[notes]{beamer}
-%\documentclass[notes=hide]{beamer}
-%\documentclass[notes=only]{beamer}
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+
+\usepackage{pgfpages}
+
+\mode<handout>{%
+	\pgfpagesuselayout{8 on 1}[a4paper] 
+	\setbeameroption{show notes}
+	\setbeamertemplate{note page}{\huge Notes\\ \normalsize \insertnote}
+}
 
 \usetheme{Madrid}
 
@@ -59,14 +66,6 @@ Georgia Tech
 \begin{frame}{Today's Plan}
 
 \tableofcontents
-
-%\begin{itemize}
-%	\item Introduce the STL
-%	\item Understand cppreference.com
-%	\item Review common containers
-%	\item Review common algorithms
-%	\item A few miscellaneous bits
-%\end{itemize}
 	
 \end{frame}
 
@@ -171,28 +170,84 @@ Georgia Tech
 
 \begin{frame}[fragile]{array}
 	\begin{itemize}
-		\item Fixed size container
+		\item Fixed size, sequence container
 		\item Preferred over "c-style" arrays
 		\item Two template arguments: \textit{type} and \textit{size}
 	\end{itemize}
 	\bigskip
 	\begin{exampleblock}{Example}
 	\begin{verbatim}
-		std::array<int,5> my_array = {0,1,2,3,4};
+		std::array<int,5> my_array = {1,2,3,4,5};
+		my_array.size(); // 5
+		my_array[0]; // 1
 	\end{verbatim}
 	\end{exampleblock}
+	\bigskip
+	\begin{center}
+	\tiny \url{http://en.cppreference.com/w/cpp/container/array}
+	\end{center}
 \end{frame}
 
-\begin{frame}{vector}
-
+\begin{frame}[fragile]{vector}
+	\begin{itemize}
+		\item Variable length, sequence container
+		\item Likely the most frequently used container
+		\item Requires one template argument for \textit{type}
+	\end{itemize}
+	\bigskip
+	\begin{exampleblock}{Example}
+		\begin{verbatim}
+			std::vector<int> my_vector = {1,2,3,4,5};
+			my_vector.size(); // 5
+			my_vector[0]; // 1
+			my_vector.push_back(6); // size is now 6
+		\end{verbatim}
+	\end{exampleblock}
+	\bigskip
+	\begin{center}
+	\tiny \url{http://en.cppreference.com/w/cpp/container/vector}
+	\end{center}
 \end{frame}
 
-\begin{frame}{set}
-
+\begin{frame}[fragile]{set}
+	\begin{itemize}
+		\item Associative container of unique elements
+		\item Can use custom compare functions
+		\item Usually a \href{https://en.wikipedia.org/wiki/Red-black_tree}{Red-Black Tree} under the hood
+	\end{itemize}
+	\bigskip
+	\begin{exampleblock}{Example}
+		\begin{verbatim}
+		std::set<std::string> my_set = {"cat","dog","horse"};
+		my_set.insert("bunny"); // adds "bunny"
+		my_set.insert("cat"); // does nothing
+		\end{verbatim}
+	\end{exampleblock}
+	\bigskip
+	\begin{center}
+		\tiny \url{http://en.cppreference.com/w/cpp/container/set}
+	\end{center}
 \end{frame}
 
-\begin{frame}{map}
-
+\begin{frame}[fragile]{map}
+	\begin{itemize}
+		\item Associative container for key-value pairs
+		\item Keys must be unique
+		\item Also usually Red-Black Trees \\
+		\textcolor{darkgray}{(This time with pairs.)}
+	\end{itemize}
+	\bigskip
+	\begin{exampleblock}{Example}
+		\begin{verbatim}
+		std::map<std::string,short> my_map = {{"orange",0xFF7F00}};
+		my_map["Jazzberry Jam"] = 0xA50B5E; // Creates new pair
+		my_map["orange"]; // 0xFF7F00
+		\end{verbatim}
+	\end{exampleblock}
+	\bigskip
+	\begin{center}
+		\tiny \url{http://en.cppreference.com/w/cpp/container/map}
+	\end{center}
 \end{frame}
 
 \section{Common Algorithms}
