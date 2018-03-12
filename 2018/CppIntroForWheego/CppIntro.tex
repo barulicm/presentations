@@ -1,0 +1,332 @@
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+
+\usepackage{pgfpages}
+\usepackage{listings}
+
+\mode<handout>{%
+	\pgfpagesuselayout{8 on 1}[a4paper] 
+	\setbeameroption{show notes}
+	\setbeamertemplate{note page}{\huge Notes\\ \normalsize \insertnote}
+}
+
+\usetheme{Madrid}
+
+\setbeamertemplate{footline}
+{
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\insertshortauthor%~~\beamer@ifempty{\insertshortinstitute}{}{(\insertshortinstitute)}
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}\insertshorttitle
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+		\end{beamercolorbox}
+		}%
+	\vskip0pt%
+}
+	
+\author{Matthew Barulic}
+
+\date{March 15, 2018}
+
+\title{Introduction to C++}
+
+\subtitle{Fundamental Principles and Building Blocks\\ for Experienced Programmers}
+
+\institute{
+	Wheego Technologies
+}
+
+\setbeamertemplate{navigation symbols}{}%hide navigation symbols
+
+\usecolortheme[named=blue]{structure}
+
+\AtBeginSection[]{
+	\begin{frame}
+		\vfill
+		\centering
+		\begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+			\usebeamerfont{title}\insertsectionhead\par%
+		\end{beamercolorbox}
+		\vfill
+	\end{frame}
+}
+
+\begin{document}
+	
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	\begin{frame}{Preface}
+		This talk...
+		\begin{itemize}
+			\item ...expects that you have seen C++ code before, but have not necessarily developed in C++ before.
+			\item ...is intended for experienced (but not expert) programmers in some language. It will tend away from covering basic syntax, logic, and control statements.
+			\item ...will occasionally use Python as a reference for comparison, but you don't need to understand Python to get the main points.
+			\item ...is based on modern C++ techniques and best practices. C++ has been widely used for over 20 years. You will find plenty of C++ code and training resources that do not adhere to these practices.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Today's Topics}
+		\tableofcontents
+	\end{frame}
+	
+	\section{Types}
+	
+	\begin{frame}{Types}
+		\begin{center}
+			\textbf{C++ typing is strong and static.}
+		\end{center}
+		\bigskip
+		\begin{itemize}
+			\item \textbf{Strong} - Types are checked for compatibility in assignment and use.
+			\item \textbf{Static} - Expressions and variables cannot change type at runtime.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Types}
+		\begin{center}
+			For comparison,\\
+			Python typing is strong and dynamic. 
+		\end{center}
+		\bigskip
+		\begin{center}
+			See: \href{https://en.wikipedia.org/wiki/Duck_typing}{Duck Typing}
+		\end{center}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+int a = 10;
+ ^
+ 
+double sum(list<double>& numbers);
+  ^         ^     ^
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Types}
+		\begin{center}
+		Every named entity in C++ has a type
+		\end{center}
+		\bigskip
+		\begin{exampleblock}{Example}
+		\lstI
+		\end{exampleblock}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+using Location3D = std::array<double,3>;
+using OrientationRPY = std::array<double,3>;
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Types}
+		Tips about types:
+		\begin{itemize}
+			\item Types should enforce semantically meaningful code.
+			\item Type names should be very clear for human readers.
+			\item Consider making types even without unique behavior.
+		\end{itemize}
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+MyVeryLongTypeName a = createMyVeryLongTypeName(...);
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{auto}
+		\begin{center}
+			Sometimes, being overly explicit with type names can leave code hard to read.
+		\end{center}
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+		
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+MyVeryLongTypeName a = createMyVeryLongTypeName(...);
+auto b = createMyVeryLongTypeName(...);
+auto c; // Does not compile! No type info.
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{auto}
+		The \textbf{auto} keyword
+		\begin{itemize}
+			\item Introduced in C++11
+			\item Asks the compiler to infer types
+			\item Does \textbf{NOT} suddenly make C++ dynamically typed
+			\item Types must be known (if only to the compiler) at compile time
+		\end{itemize}
+		
+		\begin{exampleblock}{Example}
+		\lstI
+		\end{exampleblock}
+		
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+std::vector<int> numbers = ...
+
+for(std::vector<int>::iterator iter = numbers.begin();
+    iter != numbers.end();
+    iter++)
+{ ... }
+
+for(auto iter = numbers.begin();
+    iter != numbers.end();
+    iter++)
+{ ... }
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{auto}
+		\textbf{auto} shows up in a lot of code because it can clean up redundant type specifications from the human reader's point of view while still explicitly conveying type information to the compiler.
+		
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+		
+	\end{frame}
+	
+	\begin{frame}{Templates}
+		\begin{center}
+			Sometimes, we genuinely don't know the\\ 
+			type of an object when we \textbf{write} our code.\\
+			\bigskip
+			However, the compiler will know all of\\ 
+			the types when we \textbf{compile} our code.
+		\end{center}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+template<typename T>
+T add(const T& a, const T& b) {
+	return a + b;
+}
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Templates}
+		Templated entities...
+		\begin{itemize}
+			\item Use a placeholder type to be filled at compile time.
+			\item Are duplicated for each unique set of template parameters used.
+			\item Cannot be extended with new instantiations at runtime.
+		\end{itemize}
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+	\end{frame}
+	
+		\defverbatim[colored]\lstI{
+			\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+template<typename T>
+T add(const T& a, const T& b) {
+	return a + b;
+}
+
+auto a = 10;
+auto b = 5;
+auto c = 7.0;
+
+add<int>(a,b); // OK, a & b are both int's
+add<int>(a,c); // OK, c is cast to int
+add<>(a,b); // OK, a & b are both int's
+add<>(a,c); // BAD, int or double?
+			\end{lstlisting}
+		}
+		
+		\begin{frame}{Templates}
+			\begin{exampleblock}{Example}
+				\lstI
+			\end{exampleblock}
+		\end{frame}
+	
+	\defverbatim[colored]\lstI{
+	\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+auto distance = 30.0 * meter;
+auto elapsed = 10.0 * second;
+std::cout << (distance / elapsed) << "\n";
+// Output: 3 m s^-1
+	\end{lstlisting}
+	}
+	
+	\begin{frame}{Example: Boost.Units}
+		\begin{itemize}
+			\item Types facilitate semantic operations
+			\item Boost.Units is a library for dimensional analysis
+		\end{itemize}
+		
+		\begin{exampleblock}{Example}
+		\lstI
+		\end{exampleblock}
+		
+		\bigskip
+		\bigskip
+		
+		\begin{center}
+			\tiny{\url{http://www.boost.org/doc/libs/1_65_0/doc/html/boost_units/Quick_Start.html}}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Types Recap}
+		\begin{itemize}
+			\item Types facilitate semantically meaningful code.
+			\item Types are enforced at compile time.
+			\item \textbf{auto} allows us to have clean code without losing types.
+			\item Templates allow us to share code and behavior across types.
+		\end{itemize}
+	\end{frame}
+	
+	\section{Objects and Lifetimes}
+	
+	\begin{frame}
+		\begin{center}
+			Why C++?
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{center}
+			Why C++?\\
+			\textbf{Deterministic Object Lifetimes}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{center}
+			A brief tangent about lightsabers...
+			\includegraphics[width=\textwidth]{images/lightsabers}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Lifetimes}
+		finish reading \url{https://akrzemi1.wordpress.com/2013/07/18/cs-best-feature/}
+	\end{frame}
+	
+	\section{Mythbusting}
+	
+	\begin{frame}
+		
+	\end{frame}
+
+\end{document}
