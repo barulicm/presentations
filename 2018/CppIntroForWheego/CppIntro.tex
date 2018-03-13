@@ -35,7 +35,7 @@
 
 \title{Introduction to C++}
 
-\subtitle{Fundamental Principles and Building Blocks\\ for Experienced Programmers}
+\subtitle{Some fundamental principles for experienced programmers}
 
 \institute{
 	Wheego Technologies
@@ -185,13 +185,13 @@ auto c; // Does not compile! No type info.
 std::vector<int> numbers = ...
 
 for(std::vector<int>::iterator iter = numbers.begin();
-    iter != numbers.end();
-    iter++)
+  iter != numbers.end();
+  iter++)
 { ... }
 
 for(auto iter = numbers.begin();
-    iter != numbers.end();
-    iter++)
+  iter != numbers.end();
+  iter++)
 { ... }
 		\end{lstlisting}
 	}
@@ -219,7 +219,7 @@ for(auto iter = numbers.begin();
 		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
 template<typename T>
 T add(const T& a, const T& b) {
-	return a + b;
+  return a + b;
 }
 		\end{lstlisting}
 	}
@@ -241,7 +241,7 @@ T add(const T& a, const T& b) {
 			\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
 template<typename T>
 T add(const T& a, const T& b) {
-	return a + b;
+  return a + b;
 }
 
 auto a = 10;
@@ -291,8 +291,11 @@ std::cout << (distance / elapsed) << "\n";
 	\begin{frame}{Types Recap}
 		\begin{itemize}
 			\item Types facilitate semantically meaningful code.
+			\medskip
 			\item Types are enforced at compile time.
+			\medskip
 			\item \textbf{auto} allows us to have clean code without losing types.
+			\medskip
 			\item Templates allow us to share code and behavior across types.
 		\end{itemize}
 	\end{frame}
@@ -308,6 +311,7 @@ std::cout << (distance / elapsed) << "\n";
 	\begin{frame}
 		\begin{center}
 			Why C++?\\
+			\bigskip
 			\textbf{Deterministic Object Lifetimes}
 		\end{center}
 	\end{frame}
@@ -319,14 +323,172 @@ std::cout << (distance / elapsed) << "\n";
 		\end{center}
 	\end{frame}
 	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+int main() {
+  Robot robot("Robby");
+  // ^ Constructor call begins object lifetime
+  ...
+  return 0;
+}
+// ^ End of function ends object lifetime
+		\end{lstlisting}
+	}
+	
 	\begin{frame}{Lifetimes}
-		finish reading \url{https://akrzemi1.wordpress.com/2013/07/18/cs-best-feature/}
+		Object lifetimes...
+		\begin{itemize}
+			\item Begin after initialization.
+			\item End before destruction.
+			\item Are usually based on variable scope.
+		\end{itemize}
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
 	\end{frame}
 	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+class Robot {
+  Robot(std::string name)
+  { ... }
+  
+  Robot()
+  : Robot("Unnamed")
+  { ... }
+};
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Constructors}
+		Construcotrs...
+		\begin{itemize}
+			\item Initialize an object.
+			\item Are analogous to Python's \texttt{\char`_\char`_init\char`_\char`_()} special functions.
+		\end{itemize}
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+Robot robot;
+// ^ Calls Robot's no-args constructor.
+// Compilation fails if Robot doesn't have one.
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Constructors}
+		\centering\textit{Objects} cannot be left uninitialized.
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+class TCPConnection {
+  TCPConnection()
+  { ... } // Open network socket
+
+  ~TCPConnection()
+  { ... } // Close network socket
+};
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Destructors}
+		Destructors...
+		\begin{itemize}
+			\item Cleanup any resources owned by the object.
+			\item Are comparable to Python's \texttt{\char`_\char`_del\char`_\char`_()} special functions.
+		\end{itemize}
+		\bigskip
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+	\end{frame}
+	
+	\begin{frame}{RAII}
+		\begin{center}
+			\huge RAII\\
+			\bigskip
+			\normalsize\textbf{R}esource \textbf{A}cquisition \textbf{I}s \textbf{I}nitialization
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{RAII}
+		\begin{itemize}
+			\item Required resources should be acquired during construction.
+			\medskip
+			\item Acquired resources should be released during destruction.
+			\medskip
+			\item Eliminates the need for explicit \texttt{open()} or \texttt{close()} methods.
+			\medskip
+			\item Significantly reduces the likelihood of resource mismanagement.
+		\end{itemize}
+	\end{frame}
+	
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=Python,basicstyle=\ttfamily,keywordstyle=\color{red}]
+context = zmq.Context()
+publisher = ...
+...
+pulbisher.close()
+context.term()
+		\end{lstlisting}
+	}
+	
+	\defverbatim[colored]\lstII{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+zmq::Context context;
+auto publisher = ...
+...
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{RAII}
+		\begin{exampleblock}{Example - Python}
+			\lstI
+		\end{exampleblock}
+		\begin{exampleblock}{Example - C++}
+			\lstII
+		\end{exampleblock}
+	\end{frame}
+	
+	\begin{frame}{Objects and Lifetimes Recap}
+		\begin{itemize}
+			\item C++ maintains clearly defined boundaries on object lifetimes.
+			\medskip
+			\item Constructors and destructors give control over either end of an objects lifetime.
+			\medskip
+			\item RAII design takes advantage of lifetime mechanics to safely manage resources.
+		\end{itemize}
+	\end{frame}
+		
 	\section{Mythbusting}
 	
-	\begin{frame}
-		
+	\begin{frame}{Myth \#1}
+		\begin{center}
+			C++ is complicated.
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Myth \#1}
+		\begin{center}
+			C++ is complicated.\\
+			\bigskip
+			CONFIRMED\\
+			\bigskip
+			\href{https://www.youtube.com/watch?v=tTexD26jIN4}{
+				\includegraphics[width=0.5\textwidth]{images/its_complicated_thumbnail}
+			}\\
+			\tiny\url{https://www.youtube.com/watch?v=tTexD26jIN4}
+		\end{center}
 	\end{frame}
 
 \end{document}
