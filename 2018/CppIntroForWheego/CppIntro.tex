@@ -227,11 +227,11 @@ T add(const T& a, const T& b) {
 		\end{exampleblock}
 	\end{frame}
 	
-		\defverbatim[colored]\lstI{
-			\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
 template<typename T>
 T add(const T& a, const T& b) {
-  return a + b;
+return a + b;
 }
 
 auto a = 10;
@@ -242,14 +242,42 @@ add<int>(a,b); // OK, a & b are both int's
 add<int>(a,c); // OK, c is cast to int
 add<>(a,b); // OK, a & b are both int's
 add<>(a,c); // BAD, int or double?
-			\end{lstlisting}
-		}
+		\end{lstlisting}
+	}
+	
+	\begin{frame}{Templates}
+		\begin{exampleblock}{Example}
+			\lstI
+		\end{exampleblock}
+	\end{frame}
 		
-		\begin{frame}{Templates}
-			\begin{exampleblock}{Example}
-				\lstI
-			\end{exampleblock}
-		\end{frame}
+	\defverbatim[colored]\lstI{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+RadarPacket_list = np.fromstring(...)
+TR_ANGLE            = RadarPacket_list[4]
+TR_RANGE            = RadarPacket_list[5]
+vRel                = RadarPacket_list[11]
+aRel                = RadarPacket_list[9]
+		\end{lstlisting}
+	}
+	
+	\defverbatim[colored]\lstII{
+		\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
+TR_ANGLE            = trackData.angle
+TR_RANGE            = trackData.range
+vRel                = trackData.rangeRate
+aRel                = trackData.rangeAccel
+		\end{lstlisting}
+	}
+		
+	\begin{frame}{Example: radar\_d}
+		\begin{exampleblock}{Array}
+			\lstI
+		\end{exampleblock}
+		\begin{exampleblock}{Struct}
+			\lstII
+		\end{exampleblock}
+	\end{frame}
 	
 	\defverbatim[colored]\lstI{
 	\begin{lstlisting}[language=C++,basicstyle=\ttfamily,keywordstyle=\color{red}]
@@ -458,6 +486,12 @@ auto publisher = ...
 			\medskip
 			\item RAII design takes advantage of lifetime mechanics to safely manage resources.
 		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		\begin{center}
+			\huge Thanks!
+		\end{center}
 	\end{frame}
 
 \end{document}
